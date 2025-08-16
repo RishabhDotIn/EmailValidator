@@ -17,6 +17,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(corsMiddleware);
 
+// Root - show basic info instead of 404
+app.get('/', (_req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    service: 'EmailValidator API',
+    health: '/health',
+    auth: '/v1/auth/*'
+  });
+});
+
 // Routes
 app.use('/health', healthRouter);
 app.use('/v1/auth', authRouter);
