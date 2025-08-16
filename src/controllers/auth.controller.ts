@@ -6,10 +6,21 @@ import { REFRESH_TOKEN_EXPIRES_DAYS } from '../utils/constants.js';
 import { verifyRefreshToken } from '../utils/jwt.js';
 import { isRefreshTokenValid, rotateRefreshToken, revokeRefreshToken } from '../services/token.service.js';
 import { randomId } from '../utils/crypto.js';
+import { env } from '../config/env.js';
+
+function isEmailAllowed(email: string): true | string {
+  const domain = env.ALLOWED_EMAIL_DOMAIN?.trim();
+  if (!domain) return true;
+  const at = email.toLowerCase().split('@')[1] || '';
+  if (at === domain.toLowerCase()) return true;
+  return `Please use an email ending with @${domain}`;
+}
 
 export async function requestOtpHandler(req: Request, res: Response, next: NextFunction) {
   try {
     const { email } = RequestOtpSchema.parse(req.body);
+    const allowed = isEmailAllowed(email);
+    if (allowed !== true) return res.status(400).json({ error: { code: 'INVALID_EMAIL_DOMAIN', message: allowed } });
     await requestOtp(email);
     // Generic response to avoid email enumeration
     res.json({ ok: true });
@@ -19,6 +30,8 @@ export async function requestOtpHandler(req: Request, res: Response, next: NextF
 export async function verifyOtpHandler(req: Request, res: Response, next: NextFunction) {
   try {
     const { email, otp } = VerifyOtpSchema.parse(req.body);
+    const allowed = isEmailAllowed(email);
+    if (allowed !== true) return res.status(400).json({ error: { code: 'INVALID_EMAIL_DOMAIN', message: allowed } });
     const result = await verifyOtp(email, otp);
     if (!result) return res.status(400).json({ error: { code: 'INVALID_OTP', message: 'Invalid or expired OTP' } });
 
