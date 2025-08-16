@@ -17,15 +17,8 @@ const EnvSchema = z.object({
   LOG_LEVEL: z.enum(['fatal','error','warn','info','debug','trace','silent']).default('info')
 });
 
-const parsed = EnvSchema.safeParse(process.env);
-if (!parsed.success) {
-  // Print friendly error messages
-  console.error('Invalid environment configuration:');
-  parsed.error.issues.forEach((i) => console.error(`- ${i.path.join('.')}: ${i.message}`));
-  process.exit(1);
-}
-
-const e = parsed.data;
+// Use parse() so the result is guaranteed and properly typed
+const e = EnvSchema.parse(process.env);
 
 export const env = {
   NODE_ENV: e.NODE_ENV,
