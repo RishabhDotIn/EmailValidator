@@ -20,6 +20,7 @@ app.use(corsMiddleware);
 // Routes
 app.use('/health', healthRouter);
 app.use('/v1/auth', authRouter);
+app.use('/v1/email-validation', authRouter);
 
 // 404
 app.use(notFoundHandler);
