@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { requireAuth } from '../middlewares/auth.middleware.js';
 import { createTenantHandler, getTenantHandler, listMyTenantsHandler, updateTenantHandler } from '../controllers/tenant.controller.js';
 import { createApiKeyHandler, listApiKeysHandler, revokeApiKeyHandler } from '../controllers/apiKey.controller.js';
+import { getUsageHandler } from '../controllers/usage.controller.js';
 
 const router = Router();
 
@@ -17,5 +18,8 @@ router.patch('/:tenantId', updateTenantHandler);
 router.post('/:tenantId/keys', createApiKeyHandler);
 router.get('/:tenantId/keys', listApiKeysHandler);
 router.post('/:tenantId/keys/:keyId/revoke', revokeApiKeyHandler);
+
+// Usage summary
+router.get('/:tenantId/usage', getUsageHandler);
 
 export default router;

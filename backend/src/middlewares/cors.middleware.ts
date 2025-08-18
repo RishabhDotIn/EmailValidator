@@ -10,6 +10,6 @@ export const corsMiddleware = cors({
   },
   credentials: true,
   methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key', 'x-user-email', 'x-user-id'],
   maxAge: 86400
 });
