@@ -6,6 +6,8 @@ import { corsMiddleware } from './middlewares/cors.middleware.js';
 import { errorHandler, notFoundHandler } from './middlewares/error.middleware.js';
 import healthRouter from './routes/health.routes.js';
 import authRouter from './routes/auth.routes.js';
+import tenantRouter from './routes/tenant.routes.js';
+import validationRouter from './routes/validation.routes.js';
 
 const app = express();
 
@@ -30,7 +32,8 @@ app.get('/', (_req, res) => {
 // Routes
 app.use('/health', healthRouter);
 app.use('/v1/auth', authRouter);
-app.use('/v1/email-validation', authRouter);
+app.use('/v1/email-validation', validationRouter);
+app.use('/v1/tenant', tenantRouter);
 
 // 404
 app.use(notFoundHandler);
