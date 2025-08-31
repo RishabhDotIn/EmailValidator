@@ -14,8 +14,7 @@ const EnvSchema = z.object({
   SMTP_PASS: z.string().min(1, 'SMTP_PASS is required'),
   APP_BASE_URL: z.string().url('APP_BASE_URL must be a URL'),
   CORS_ORIGINS: z.string().optional(),
-  LOG_LEVEL: z.enum(['fatal','error','warn','info','debug','trace','silent']).default('info'),
-  ALLOWED_EMAIL_DOMAIN: z.string().optional()
+  LOG_LEVEL: z.enum(['fatal','error','warn','info','debug','trace','silent']).default('info')
 });
 
 // Use parse() so the result is guaranteed and properly typed
@@ -34,7 +33,6 @@ export const env = {
   SMTP_PASS: e.SMTP_PASS,
   APP_BASE_URL: e.APP_BASE_URL,
   LOG_LEVEL: e.LOG_LEVEL,
-  ALLOWED_EMAIL_DOMAIN: e.ALLOWED_EMAIL_DOMAIN,
   get isProd() { return this.NODE_ENV === 'production'; },
   get isDev() { return this.NODE_ENV === 'development'; },
   get corsOrigins(): string[] {
